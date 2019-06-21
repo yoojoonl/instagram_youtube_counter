@@ -1,0 +1,23 @@
+{
+  "name": "finalc",
+  "version": "1.0.0",
+  "description": "Instagram and Youtube follower/subscriber counter",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js",
+    "install": "npm install moment --save"
+  },
+  "keywords": [
+    "Instagram",
+    "Youtube",
+    "subscriber count",
+    "follower count"
+  ],
+  "author": "Yoo Joon Lee",
+  "license": "ISC",
+  "dependencies": {
+    "moment": "^2.24.0",
+    "nodemon": "^1.19.1"
+  }
+}
