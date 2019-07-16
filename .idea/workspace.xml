@@ -1,12 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="a5f18950-db10-4d86-b5e0-20bb769e6a0a" name="Default Changelist" comment="New index page with express">
-      <change afterPath="$PROJECT_DIR$/index2.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/views/graph.ejs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/instagramCount/arianagrande.txt" beforeDir="false" afterPath="$PROJECT_DIR$/instagramCount/arianagrande.txt" afterDir="false" />
-    </list>
+    <list default="true" id="a5f18950-db10-4d86-b5e0-20bb769e6a0a" name="Default Changelist" comment="New index page with express" />
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
     <ignored path="$PROJECT_DIR$/tmp/" />
@@ -81,8 +76,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/views/graph.ejs">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="154">
-              <caret line="7" column="72" selection-start-line="7" selection-start-column="72" selection-end-line="7" selection-end-column="72" />
+            <state relative-caret-position="462">
+              <caret line="21" column="28" selection-start-line="21" selection-start-column="28" selection-end-line="21" selection-end-column="28" />
             </state>
           </provider>
         </entry>
@@ -208,7 +203,7 @@
     </option>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="63" />
+    <option name="x" value="61" />
     <option name="y" value="23" />
     <option name="width" value="1549" />
     <option name="height" value="1384" />
@@ -320,7 +315,7 @@
       <updated>1560408521863</updated>
       <workItem from="1560408523927" duration="145817000" />
       <workItem from="1562201294779" duration="11888000" />
-      <workItem from="1562217206815" duration="55302000" />
+      <workItem from="1562217206815" duration="55544000" />
     </task>
     <task id="LOCAL-00001" summary="New index page with express">
       <created>1563240954273</created>
@@ -329,11 +324,18 @@
       <option name="project" value="LOCAL" />
       <updated>1563240954273</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="New index page with express">
+      <created>1563241342762</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1563241342762</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="213007000" />
+    <option name="totallyTimeSpent" value="213249000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -345,14 +347,14 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="63" y="23" width="1549" height="1384" extended-state="0" />
+    <frame x="61" y="23" width="1549" height="1384" extended-state="0" />
     <editor active="true" />
     <layout>
       <window_info content_ui="combo" id="Project" order="0" sideWeight="0.6677852" visible="true" weight="0.18520942" />
       <window_info id="Structure" order="1" sideWeight="0.33221477" side_tool="true" weight="0.14739583" />
       <window_info id="npm" order="2" sideWeight="0.3304904" side_tool="true" weight="0.11451613" />
       <window_info id="Favorites" order="3" sideWeight="0.5005025" side_tool="true" weight="0.21468475" />
-      <window_info active="true" anchor="bottom" id="Messages" visible="true" weight="0.32939324" />
+      <window_info anchor="bottom" id="Messages" weight="0.32939324" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
       <window_info anchor="bottom" id="Run" order="2" sideWeight="0.49980307" weight="0.27623457" />
@@ -361,7 +363,7 @@
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" weight="0.32962137" />
       <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
-      <window_info anchor="bottom" id="Version Control" order="8" weight="0.32939324" />
+      <window_info active="true" anchor="bottom" id="Version Control" order="8" visible="true" weight="0.10401891" />
       <window_info anchor="bottom" id="Event Log" order="9" sideWeight="0.21975806" side_tool="true" weight="0.2885246" />
       <window_info anchor="bottom" id="Terminal" order="10" sideWeight="0.7802419" weight="0.30575258" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
@@ -391,6 +393,32 @@
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="1" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State>
+              <option name="RECENTLY_FILTERED_USER_GROUPS">
+                <collection />
+              </option>
+              <option name="RECENTLY_FILTERED_BRANCH_GROUPS">
+                <collection />
+              </option>
+              <option name="COLUMN_ORDER">
+                <list>
+                  <option value="0" />
+                  <option value="1" />
+                  <option value="2" />
+                  <option value="3" />
+                </list>
+              </option>
+            </State>
+          </value>
+        </entry>
+      </map>
+    </option>
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="New index page with express" />
@@ -624,8 +652,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/views/graph.ejs">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="154">
-          <caret line="7" column="72" selection-start-line="7" selection-start-column="72" selection-end-line="7" selection-end-column="72" />
+        <state relative-caret-position="462">
+          <caret line="21" column="28" selection-start-line="21" selection-start-column="28" selection-end-line="21" selection-end-column="28" />
         </state>
       </provider>
     </entry>
