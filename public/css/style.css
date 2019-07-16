@@ -1,0 +1,23 @@
+#instagram_container {
+    width:50%;
+    float:left;
+}
+#youtube_cotainer {
+    width:50%;
+    float:right;
+}
+.field {
+    width:50%;
+}
+.button {
+    width:25%;
+}
+.center {
+    text-align: center;
+}
+#itable {
+    height:1px;
+}
+.ltext {
+    font-size: 20px;
+}
