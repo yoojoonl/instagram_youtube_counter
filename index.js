@@ -8,6 +8,7 @@ let y_data;
 let y_pictures;
 let y_url;
 
+
 //Write instagram account names here (need exact account names)
 let instagram_names = [];
 
@@ -23,6 +24,8 @@ let youtube_names = [];
  */
 async function helper() {
     const instagram_data = await instagram_call();
+    const youtube_data = await youtube_call();
+
     if((instagram_data === undefined) || (instagram_data.length === 0)){
         i_data = [];
         i_pictures = [];
@@ -31,7 +34,6 @@ async function helper() {
         i_pictures = instagram_data[1];
     }
 
-    const youtube_data = await youtube_call();
     if((youtube_data === undefined) || (youtube_data.length === 0)){
         y_data = [];
         y_pictures = [];
@@ -72,7 +74,7 @@ function youtube_call() {
 /**
  * Server function that creates the server and writes the content including instagram and youtube account info
  */
-function server() {
+function server(port) {
     http.createServer(function (req, site) {
         site.writeHead(200, {'Content-Type': 'text/html;charset=utf-8'});
         site.write('<div style="float:left; width:48vmin;">');
@@ -86,7 +88,7 @@ function server() {
                 const url = 'https://www.instagram.com/' + split[0];
                 site.write('<div style = "height:20vmin; background-color:lightgrey; border:1px solid black; margin-bottom: 1vh;">');
                     site.write('<p style = "display:flex; align-items: center; margin:0px">');
-                        site.write('<img src = "' + i_pictures[j*6] + '" style = "width:8.5vmin; height:8.5vmin; margin-left: 1vmin; margin-top:1vmin" alt = "Profile Pic">');
+                        site.write('<img src = "' + i_pictures[j][0] + '" style = "width:8.5vmin; height:8.5vmin; margin-left: 1vmin; margin-top:1vmin" alt = "Profile Pic">');
                         site.write('<span>');
                             site.write('<a href = "'+ url + '" style = "font-size:2vmin; margin-left:1vmin;">' + split.shift() + '</a>');
                             site.write('<d style = "font-size:2vmin;"> ' + split.join(' ') +'</d>');
@@ -94,7 +96,7 @@ function server() {
                     site.write('</p>');
                     site.write('<p style="margin:0px">');
                     for(let k = 0; k < 5; k++){
-                        site.write('<img src = "' + i_pictures[(j * 6) + k + 1] + '" style = "width:8.5vmin; ' +
+                        site.write('<img src = "' + i_pictures[j][k+1] + '" style = "width:8.5vmin; ' +
                             'height:8.5vmin; margin-left:1vmin; margin-top:1vmin" alt = "image">');
                     }
                     site.write('</p>');
@@ -117,7 +119,8 @@ function server() {
             site.write('</div>');
             site.end();
         }
-    }).listen(2000);
+    }).listen(port);
+
 }
 
 function main(){
@@ -129,7 +132,9 @@ function main(){
         }
     }
     helper();
-    server();
+    let port = 2000;
+    server(port);
+    console.log('Listening on port ' + port);
     setInterval(function() {
         helper();
     },300000); //Timer in milliseconds that determines how often info is updated

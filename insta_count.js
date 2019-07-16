@@ -51,11 +51,22 @@ function count_followers(name,data,pictures) {
     }).then((body) => {
         const msg = body.graphql.user.username + ' follower count is '
             + number_with_commas(body.graphql.user.edge_followed_by.count) + ' at time '
-            + moment().format('MMMM Do YYYY, h:mm a') + '\n';
+            + moment().format('MMMM D, YYYY HH:mm') + '\n';
         const fileName = 'instagramCount/' + name + '.txt';
         fs.appendFile(fileName, msg, (err) => {
             if (err) console.log('Error writing to file: ', err);
         });
+        let temp = [];
+        temp.push(body.graphql.user.profile_pic_url_hd);
+        for(let i = 0; i < 5; i++){
+            if (body.graphql.user.edge_owner_to_timeline_media.edges[i] === undefined){
+                temp.push(dummy_image);
+            } else{
+                temp.push(body.graphql.user.edge_owner_to_timeline_media.edges[i].node.display_url);
+            }
+        }
+        pictures.push(temp);
+        /*
         pictures.push(body.graphql.user.profile_pic_url_hd);
         for(let i = 0; i < 5; i++){
             if (body.graphql.user.edge_owner_to_timeline_media.edges[i] === undefined){
@@ -64,6 +75,8 @@ function count_followers(name,data,pictures) {
                 pictures.push(body.graphql.user.edge_owner_to_timeline_media.edges[i].node.display_url);
             }
         }
+
+         */
         data.push(msg);
         console.log(msg);
     }).catch((error) => {

@@ -121,9 +121,15 @@ function storeToken(token) {
  * @param auth: an authorized OAuth2 client.
  */
 async function helper(auth) {
-    for(let i = 0; i < names.length; i++){
-        await get_channel(auth,names[i]);
+    if(Array.isArray(names)){
+        for(let i = 0; i < names.length; i++){
+            await get_channel(auth,names[i]);
+        }
     }
+    else{
+        await get_channel(auth,names);
+    }
+
 }
 
 /**
@@ -183,11 +189,12 @@ function get_channel(auth, name) {
  * @returns {string}: the message being written to the file with name, subscribers, and views
  */
 function write_to_file(title,subscribers,viewCount) {
+    title = title.replace(' ','_');
     const fileName = 'youtubeCount/' + title + '.txt';
     const msg = title + ' channel has '
         + number_with_commas(subscribers) + ' subscribers, and it has '
         + number_with_commas(viewCount) + ' views as of '
-        + moment().format('MMMM Do YYYY, h:mm a') + '\n';
+        + moment().format('MMMM D, YYYY HH:mm') + '\n';
     fs.appendFile(fileName, msg, (err) => {
         if(err) console.log('Error writing to file: ' + err + '\n');
     });

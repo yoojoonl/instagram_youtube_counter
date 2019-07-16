@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset = "utf-8">
+    <meta http-equiv = "refresh" content = "300" />
+    <title>Youtube/Instagram Counter</title>
+    <link rel = "stylesheet" type="text/css" href = "/css/style.css">
+    <link href = 'https://fonts.googleapis.com/css?family=Open+Sans:300' rel = 'stylesheet' type = 'text/css'>
+</head>
+<body>
+    <h1 class = "center">Youtube & Instagram Counter</h1>
+    <div id = "instagram_container">
+        <fieldset>
+            <h2 class = "center">Instagram Followers</h2>
+            <div class = "center">
+                <form action="/post" method="post">
+                    <input name = "instagram" type = "text" class = "ghost-input field" placeholder = "Enter a Instagram Account" required>
+                    <input type = "submit" class = "ghost-button button" value = "Enter Account">
+                </form>
+            </div>
+            <ul>
+            <% if((data !== undefined) && (data[0] !== undefined)){
+                let i = 0;
+                data[0].forEach(function(user) {
+                    if(user.length !== 0){ %>
+                        <li>
+                            <% let temp = user.split(' ');
+                            let url = '/igraph?name='+temp[0]; %>
+                            <form action = "<%= url %>" method="post">
+                                <span class="ltext"><%= user %></span>
+                                <button type = "submit">History</button>
+                                <input type="button" onclick="window.location.href = 'https://www.instagram.com/<%=user.split(' ')[0]%>'" value="link"/>
+                            </form>
+                        </li>
+                    <% }
+                    if(data[2][i] !== undefined){
+                        data[2][i].forEach(function(picture) { %>
+                            <img src = "<%= picture %>" style = "width:12vw; height:12vw; margin-left:0.5vw; margin-bottom:0.5vw;" alt = "images">
+                        <% })
+                    }
+                    i += 1;
+                });
+            } %>
+            </ul>
+        </fieldset>
+    </div>
+
+    <div id = "youtube_container">
+        <fieldset>
+            <h2 class = "center">Youtube Subscribers & Views</h2>
+            <div class = "center">
+                <form action = "/post" method = "post">
+                    <input name = "youtube" type = "text" class = "ghost-input field" placeholder = "Enter a Youtube Channel" required>
+                    <input type = "submit" class = "ghost-button button" value = "Enter Channel">
+                </form>
+            </div>
+            <ul>
+                <% if((data !== undefined) && (data[1] !== undefined)){
+                    let i = 0;
+                    data[1].forEach(function(user) {
+                        if(user.length !== 0){ %>
+                            <li>
+                                <% let temp;
+                                if(Array.isArray(user)){
+                                    temp = user[0].split(' ');
+                                } else {
+                                    temp = user.split(' ');
+                                }
+                                let url = '/ygraph?name='+temp[0]; %>
+                                <form action = "<%= url %>" method = "post">
+                                    <span class="ltext"><%= user %></span>
+                                    <button type = "submit">History</button>
+                                    <input type="button" onclick="window.location.href = '<%=data[4][i]%>'" value="link"/>
+                                </form>
+                            </li>
+                        <% }
+                        if(data[3][i] !== undefined){ %>
+                            <img src = "<%= data[3][i] %>" style = "width:10vw; height:10vw;" alt="profile">
+                        <% }
+                        i += 1;
+                    });
+                } %>
+            </ul>
+        </fieldset>
+    </div>
+</body>
