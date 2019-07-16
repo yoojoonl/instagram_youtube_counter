@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset = "utf-8">
+    <meta http-equiv = "refresh" content = "300" />
+    <title>Youtube/Instagram Counter</title>
+    <link rel = "stylesheet" type = "text/css" href = "/css/style.css">
+    <link href = 'https://fonts.googleapis.com/css?family=Open+Sans:300' rel = 'stylesheet' type = 'text/css'>
+</head>
+<body>
+    <% if((data !== undefined) && (type === 'i')){
+        let words = data.split(' '); %>
+        <h1> Data for <%=data.split(' ')[0]%></h1>
+        <form action = "/" method = "get">
+            <button type = "submit">Home</button>
+        </form>
+        <% let subscribers = [];
+        let dates = [];
+        if(words.length >= 4){
+            for(let i = 4; i < words.length; i+=10){
+                subscribers.push(words[i]);
+                let date = '';
+                date += (words[i+3] + ' ');
+                date += (words[i+4] + ' ');
+                date += (words[i+5] + ' ');
+                date += (words[i+6].substring(0,5));
+                dates.push(date);
+            }
+        } %>
+        <table id="itable">
+            <tr>
+                <th>Subscribers</th>
+                <th>Time</th>
+            </tr>
+            <% for(let i = 0; i < subscribers.length; i+=1){ %>
+                <tr><td><%= subscribers[i] %></td><td><%= dates[i] %></td></tr>
+            <% } %>
+        </table>
+        <script>
+            const subscribers = <%- JSON.stringify(subscribers) %>;
+            const dates = <%- JSON.stringify(dates) %>;
+        </script>
+    <% } else if((data !== undefined) && (type === 'y')){
+        let words = data.split(' '); %>
+        <h1> Data for <%= words[0] %></h1>
+        <form action = "/" method = "get">
+            <button type = "submit">Home</button>
+        </form>
+        <% let subscribers = [];
+        let views = [];
+        let dates = [];
+        for(let i = 3; i < words.length; i+=15){
+            subscribers.push(words[i]);
+            views.push(words[i+5]);
+            let date = ''
+            date += (words[i+9] + ' ');
+            date += (words[i+10] + ' ');
+            date += (words[i+11] + ' ');
+            date += (words[i+12].substring(0,5));
+            dates.push(date)
+        } %>
+        <table>
+            <tr>
+                <th>Subscribers</th>
+                <th>Views</th>
+                <th>Date</th>
+            </tr>
+            <% for(let i = 0; i < subscribers.length; i+=1){ %>
+                <tr><td><%=subscribers[i]%></td> <td><%=views[i]%></td> <td><%= dates[i]%></td></tr>
+            <% } %>
+        </table>
+        <script>
+            const subscribers = <%- JSON.stringify(subscribers) %>;
+            const dates = <%- JSON.stringify(dates) %>;
+        </script>
+    <% } else{ %>
+            No Data
+    <% } %>
+    <canvas id="myChart" width="400" height="400"></canvas>
+
+</body>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+<script>
+    let ctx = document.getElementById('myChart').getContext('2d');
+    let points = [];
+    for(let i = 0; i < subscribers.length; i++){
+        points.push({x: new Date(dates[i]), y: subscribers[i].replace(/,/g,'')});
+    }
+    /*
+    let c = [];
+    let e = '';
+    dates.forEach(function(temp){
+        let d = temp.substring(0,7);
+        d = d.replace(',','');
+        if((e !== temp.substring(5,7))){
+            c.push(d);
+            e = temp.substring(5,7);
+        }
+    });
+    console.log(c);
+
+     */
+    let myChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: dates,
+            datasets: [{
+                label: 'Followers',
+                data: points,
+                backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                borderColor: 'rgba(255,99,132,1)',
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                xAxes: {
+                    type: 'time',
+                    time: {
+                        unit: 'day',
+                        unitStepSize: 1,
+                        displayFormats: {
+                            'day': 'MMM DD'
+                        }
+                    }
+                }
+            }
+        }
+    });
+</script>
