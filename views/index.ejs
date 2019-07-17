@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
     <meta charset = "utf-8">
     <meta http-equiv = "refresh" content = "300" />
@@ -8,13 +8,27 @@
     <link href = 'https://fonts.googleapis.com/css?family=Open+Sans:300' rel = 'stylesheet' type = 'text/css'>
 </head>
 <body>
+    <% let i_error = "";
+    let y_error = "";
+    if(data[5] === true) {
+        i_error = 'That account was not found';
+    }
+    if(data[6] === true){
+        y_error = 'That channel was not found';
+    }
+    %>
     <h1 class = "center">Youtube & Instagram Counter</h1>
+    <form action="/refresh" method="post" class = "center">
+        <button type = "submit">Refresh Values</button>
+    </form>
     <div id = "instagram_container">
         <fieldset>
             <h2 class = "center">Instagram Followers</h2>
+            <h6 class = "error"><%=i_error%></h6>
             <div class = "center">
                 <form action="/post" method="post">
-                    <input name = "instagram" type = "text" class = "ghost-input field" placeholder = "Enter a Instagram Account" required>
+                    <input name = "instagram" type = "text" class = "ghost-input field"
+                           placeholder = "Enter a Instagram Account" required>
                     <input type = "submit" class = "ghost-button button" value = "Enter Account">
                 </form>
             </div>
@@ -29,13 +43,19 @@
                             <form action = "<%= url %>" method="post">
                                 <span class="ltext"><%= user %></span>
                                 <button type = "submit">History</button>
-                                <input type="button" onclick="window.location.href = 'https://www.instagram.com/<%=user.split(' ')[0]%>'" value="link"/>
+                                <input type="button" onclick="window.location.href =
+                                        'https://www.instagram.com/<%=user.split(' ')[0]%>'" value="link"/>
+                            </form>
+                            <% let url2 = '/idelete?name=' + i%>
+                            <form action = "<%= url2 %>" %> method="post">
+                                <button type = "submit">Delete</button>
                             </form>
                         </li>
                     <% }
                     if(data[2][i] !== undefined){
                         data[2][i].forEach(function(picture) { %>
-                            <img src = "<%= picture %>" style = "width:12vw; height:12vw; margin-left:0.5vw; margin-bottom:0.5vw;" alt = "images">
+                            <img src = "<%= picture %>" style = "width:12vw; height:12vw;
+                                margin-left:0.5vw; margin-bottom:0.5vw;" alt = "images">
                         <% })
                     }
                     i += 1;
@@ -48,9 +68,11 @@
     <div id = "youtube_container">
         <fieldset>
             <h2 class = "center">Youtube Subscribers & Views</h2>
+            <h6 class = "error"><%=y_error%></h6>
             <div class = "center">
                 <form action = "/post" method = "post">
-                    <input name = "youtube" type = "text" class = "ghost-input field" placeholder = "Enter a Youtube Channel" required>
+                    <input name = "youtube" type = "text" class = "ghost-input field"
+                           placeholder = "Enter a Youtube Channel" required>
                     <input type = "submit" class = "ghost-button button" value = "Enter Channel">
                 </form>
             </div>
@@ -70,7 +92,12 @@
                                 <form action = "<%= url %>" method = "post">
                                     <span class="ltext"><%= user %></span>
                                     <button type = "submit">History</button>
-                                    <input type="button" onclick="window.location.href = '<%=data[4][i]%>'" value="link"/>
+                                    <input type="button" onclick="window.location.href =
+                                            '<%=data[4][i]%>'" value="link"/>
+                                </form>
+                                <% let url2 = '/ydelete?name=' + i %>
+                                <form action = "<%= url2 %>" %> method="post">
+                                    <button type = "submit">Delete</button>
                                 </form>
                             </li>
                         <% }

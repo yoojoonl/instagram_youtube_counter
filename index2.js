@@ -7,16 +7,52 @@ let i_pictures;
 let y_data;
 let y_pictures;
 let y_url;
-let data_arr = [[],[],[],[],[]];
-
-
-//Write instagram account names here (need exact account names)
+let data_arr = [[],[],[],[],[],[false],[false]];
 let instagram_names = [];
-
-//Write youtube account names here (doesn't need to be exact can search)
 let youtube_names = [];
 //If you want to add more names call node index.js yJamesCharles iArianaGrande 'yAriana Grande'
 //Add the y for a youtube channel and an i for an instagram account, if you need a space add it in quotes
+
+if (typeof localStorage === "undefined" || localStorage === null) {
+    const LocalStorage = require('node-localstorage').LocalStorage;
+    localStorage = new LocalStorage('./scratch');
+}
+
+if(localStorage.getItem('instagram_names2') === null){
+    localStorage.setItem('instagram_names2', []);
+} else{
+    let a = localStorage.getItem('instagram_names2');
+    if(Array.isArray(a)){
+        instagram_names = localStorage.getItem('instagram_names2');
+    }
+    else if(a.includes(',')){
+        instagram_names = localStorage.getItem('instagram_names2').split(',');
+    }
+    else if(localStorage.getItem('instagram_names2') === ''){
+        instagram_names = [];
+    }
+    else{
+        instagram_names = [localStorage.getItem('instagram_names2')];
+    }
+}
+
+if(localStorage.getItem('youtube_names2') === null){
+    localStorage.setItem('youtube_names2', []);
+} else{
+    let a = localStorage.getItem('youtube_names2');
+    if(Array.isArray(a)){
+        youtube_names = localStorage.getItem('youtube_names2');
+    }
+    else if(a.includes(',')){
+        youtube_names = localStorage.getItem('youtube_names2').split(',');
+    }
+    else if(localStorage.getItem('youtube_names2') === ''){
+        youtube_names = [];
+    }
+    else{
+        youtube_names = [localStorage.getItem('youtube_names2')];
+    }
+}
 
 /**
  * Takes in a parameter names and generates values for those without updating the others in instagram names
@@ -26,9 +62,14 @@ let youtube_names = [];
  */
 async function insta_helper(names){
     const instagram_data = await instagram_call(names);
-    if(!((instagram_data === undefined) || (instagram_data.length === 0))) {
+    if(!((instagram_data === undefined) || (instagram_data[0].length === 0))) {
         data_arr[0].push(instagram_data[0][0]);
         data_arr[2].push(instagram_data[1][0]);
+        localStorage.setItem('instagram_names2', instagram_names);
+    }
+    else{
+        data_arr[5] = true;
+        instagram_names.pop();
     }
 }
 
@@ -43,7 +84,13 @@ async function youtube_helper(names){
     if(!((youtube_data === undefined) || (youtube_data.length === 0))) {
         data_arr[1].push(youtube_data[0]);
         data_arr[3].push(youtube_data[1]);
-        data_arr[4].push(youtube_data[2]);
+        if(Array.isArray(youtube_data[2])){
+            data_arr[4].push(youtube_data[2][0]);
+        }
+        else{
+            data_arr[4].push(youtube_data[2]);
+        }
+        localStorage.setItem('youtube_names2', youtube_names);
     }
 }
 
@@ -112,7 +159,7 @@ function youtube_call(names) {
  */
 function server(port) {
     const express = require('express');
-    const bodyParser = require('body-parser');
+    const bodyParser = require ('body-parser');
     const app = express();
     app.use(express.static('public'));
     app.use(bodyParser.urlencoded({ extended: true }));
@@ -123,6 +170,7 @@ function server(port) {
             data_arr[0].pop();
             data_arr[2].pop();
             instagram_names.pop();
+            localStorage.setItem('instagram_names2', instagram_names);
         }
 
         if(Array.isArray(data_arr[1][data_arr[1].length - 1])) {
@@ -131,9 +179,10 @@ function server(port) {
                 data_arr[3].pop();
                 data_arr[4].pop();
                 youtube_names.pop();
+                data_arr[6] = true;
             }
         }
-        res.render('index', {data: data_arr, error: null});
+        res.render('index', {data: data_arr});
     });
 
     app.all('/igraph', function(req, res){
@@ -164,6 +213,8 @@ function server(port) {
     });
 
     app.post('/post', function (req, res) {
+        data_arr[5] = false;
+        data_arr[6] = false;
         if((!(instagram_names.includes(req.body.instagram))) && (req.body.instagram !== undefined)){
             instagram_names.push(req.body.instagram);
             insta_helper([req.body.instagram]);
@@ -175,6 +226,30 @@ function server(port) {
         setTimeout( function() {
             res.redirect('/');
         },1500);
+    });
+
+    app.post('/refresh', function(req,res){
+       helper();
+       res.redirect('/');
+    });
+
+    app.post('/idelete',function(req,res){
+        let index = req.originalUrl.split('?')[1].split('=')[1];
+        instagram_names.splice(index,1);
+        localStorage.setItem('instagram_names2', instagram_names);
+        data_arr[0].splice(index,1);
+        data_arr[2].splice(index,1);
+        res.redirect('/');
+    });
+
+    app.post('/ydelete',function(req,res){
+        let index = req.originalUrl.split('?')[1].split('=')[0];
+        youtube_names.splice(index, 1);
+        localStorage.setItem('youtube_names2', youtube_names);
+        data_arr[1].splice(index, 1);
+        data_arr[3].splice(index, 1);
+        data_arr[4].splice(index, 1);
+        res.redirect('/');
     });
 
     app.listen(port, function () {
@@ -189,12 +264,14 @@ function main(){
     for(let i = 2; i < process.argv.length; i++){
         if((process.argv[i][0]) === 'i' || (process.argv[i][0] === 'I')){
             instagram_names.push(process.argv[i].substring(1));
+            localStorage.setItem('instagram_names2', instagram_names);
         } else if((process.argv[i][0] === 'y') || (process.argv[i][0] === 'Y')){
             youtube_names.push(process.argv[i].substring(1));
+            localStorage.setItem('youtube_names2', youtube_names);
         }
     }
     helper();
-    server(3700);
+    server(3000);
     setInterval(function() {
         helper();
     },300*1000); //Timer in milliseconds that determines how often info is updated

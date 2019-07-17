@@ -26,20 +26,41 @@
                 date += (words[i+6].substring(0,5));
                 dates.push(date);
             }
+        }
+        let new_points = [];
+        for(let i = 0; i < subscribers.length; i++){
+            //points.push({x: new Date(dates[i]), y: subscribers[i].replace(/,/g,'')});
+            let temp = new Date(dates[i]);
+            if(new_points.length === 0){
+                new_points.push([temp.getFullYear()+ '-' + temp.getMonth() + '-'
+                    + temp.getDate(), subscribers[i]]);
+            }
+            else if(new_points[new_points.length - 1][0] === (temp.getFullYear()+ '-'
+                    + temp.getMonth() + '-' + temp.getDate()))
+            {
+                new_points[new_points.length - 1] = [temp.getFullYear()+ '-'
+                    + temp.getMonth() + '-' + temp.getDate(), subscribers[i]];
+            }
+            else{
+                new_points.push([temp.getFullYear()+ '-' + temp.getMonth() + '-'
+                    + temp.getDate(), subscribers[i]]);
+            }
         } %>
         <table id="itable">
             <tr>
-                <th>Subscribers</th>
-                <th>Time</th>
+                <th>Date</th>
+                <th>Followers</th>
             </tr>
-            <% for(let i = 0; i < subscribers.length; i+=1){ %>
-                <tr><td><%= subscribers[i] %></td><td><%= dates[i] %></td></tr>
+            <% for(let i = 0; i < new_points.length; i+=1){ %>
+                <tr><td class="center"><%= new_points[i][0] %></td>
+                    <td class="center"><%= new_points[i][1] %></td></tr>
             <% } %>
         </table>
         <script>
-            const subscribers = <%- JSON.stringify(subscribers) %>;
-            const dates = <%- JSON.stringify(dates) %>;
+            const new_points = <%- JSON.stringify(new_points) %>;
+            const axis_label = 'Followers';
         </script>
+
     <% } else if((data !== undefined) && (type === 'y')){
         let words = data.split(' '); %>
         <h1> Data for <%= words[0] %></h1>
@@ -58,23 +79,46 @@
             date += (words[i+11] + ' ');
             date += (words[i+12].substring(0,5));
             dates.push(date)
+        }
+        let new_points = [];
+        for(let i = 0; i < subscribers.length; i++){
+            //points.push({x: new Date(dates[i]), y: subscribers[i].replace(/,/g,'')});
+            let temp = new Date(dates[i]);
+            if(new_points.length === 0){
+                new_points.push([temp.getFullYear()+ '-' + temp.getMonth() + '-'
+                + temp.getDate(), subscribers[i], views[i]]);
+            }
+            else if(new_points[new_points.length - 1][0] === (temp.getFullYear()+ '-'
+                    + temp.getMonth() + '-' + temp.getDate()))
+            {
+                new_points[new_points.length - 1] = [temp.getFullYear()+ '-' + temp.getMonth()
+                    + '-' + temp.getDate(), subscribers[i], views[i]];
+            }
+            else{
+                new_points.push([temp.getFullYear()+ '-' + temp.getMonth()
+                    + '-' + temp.getDate(), subscribers[i], views[i]]);
+            }
         } %>
         <table>
             <tr>
+                <th>Date</th>
                 <th>Subscribers</th>
                 <th>Views</th>
-                <th>Date</th>
             </tr>
-            <% for(let i = 0; i < subscribers.length; i+=1){ %>
-                <tr><td><%=subscribers[i]%></td> <td><%=views[i]%></td> <td><%= dates[i]%></td></tr>
+            <% for(let i = 0; i < new_points.length; i+=1){ %>
+                <tr><td class="center"><%=new_points[i][0]%></td>
+                    <td class="center"><%=new_points[i][1]%></td>
+                    <td class="center"><%= new_points[i][2]%></td></tr>
             <% } %>
         </table>
         <script>
-            const subscribers = <%- JSON.stringify(subscribers) %>;
-            const dates = <%- JSON.stringify(dates) %>;
+            const new_points = <%- JSON.stringify(new_points) %>;
+            const axis_label = 'Subscribers';
         </script>
-    <% } else{ %>
-            No Data
+    <% }
+
+    else{ %>
+        No Data
     <% } %>
     <canvas id="myChart" width="400" height="400"></canvas>
 
@@ -83,49 +127,24 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
 <script>
     let ctx = document.getElementById('myChart').getContext('2d');
+    let dates = [];
     let points = [];
-    for(let i = 0; i < subscribers.length; i++){
-        points.push({x: new Date(dates[i]), y: subscribers[i].replace(/,/g,'')});
+    for(let i = 0;i < new_points.length;i++){
+        points.push({x:new_points[i][0], y:new_points[i][1].replace(/,/g,'')});
+        dates.push(new_points[i][0]);
     }
-    /*
-    let c = [];
-    let e = '';
-    dates.forEach(function(temp){
-        let d = temp.substring(0,7);
-        d = d.replace(',','');
-        if((e !== temp.substring(5,7))){
-            c.push(d);
-            e = temp.substring(5,7);
-        }
-    });
-    console.log(c);
 
-     */
     let myChart = new Chart(ctx, {
         type: 'line',
         data: {
             labels: dates,
             datasets: [{
-                label: 'Followers',
+                label: axis_label,
                 data: points,
                 backgroundColor: 'rgba(255, 99, 132, 0.2)',
                 borderColor: 'rgba(255,99,132,1)',
                 borderWidth: 1
             }]
-        },
-        options: {
-            scales: {
-                xAxes: {
-                    type: 'time',
-                    time: {
-                        unit: 'day',
-                        unitStepSize: 1,
-                        displayFormats: {
-                            'day': 'MMM DD'
-                        }
-                    }
-                }
-            }
         }
     });
 </script>
